@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>WiFi Controller</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #111;
+      color: #fff;
+      text-align: center;
+      padding-top: 40px;
+    }
+    button {
+      padding: 15px 40px;
+      font-size: 20px;
+      border: none;
+      background: #ff3333;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:active {
+      opacity: 0.6;
+    }
+    #status {
+      margin-top: 20px;
+      font-size: 22px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🔥 WiFi Remote Controller</h1>
+
+  <button id="runBtn">RUN SCRIPT</button>
+
+  <div id="status">Status: Unknown</div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCetF4NBbnQEJmeHc2-6u51ijEChB4BuWQ",
+      authDomain: "wifi-controller-1247a.firebaseapp.com",
+      databaseURL: "https://wifi-controller-1247a-default-rtdb.firebaseio.com",
+      projectId: "wifi-controller-1247a",
+      storageBucket: "wifi-controller-1247a.firebasestorage.app",
+      messagingSenderId: "138639826208",
+      appId: "1:138639826208:web:f190cd862f26bb3e7b8b45",
+      measurementId: "G-RYC6638DST"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    document.getElementById("runBtn").onclick = () => {
+      set(ref(db, "command/run"), true);
+      alert("Command sent!");
+    };
+
+    onValue(ref(db, "status/device"), (snapshot) => {
+      document.getElementById("status").innerText =
+        "Status: " + snapshot.val();
+    });
+  </script>
+
+</body>
+</html>
